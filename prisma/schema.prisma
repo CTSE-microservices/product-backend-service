@@ -1,0 +1,63 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+  schemas  = ["product"]
+}
+
+model categories {
+  category_id   Int        @id @default(autoincrement())
+  category_name String     @db.VarChar(100)
+  description   String?
+  products      products[]
+
+  @@schema("product")
+}
+
+model price_book_items {
+  id            Int          @id @default(autoincrement())
+  price_book_id Int?
+  product_id    Int?
+  price         Decimal      @db.Decimal(10, 2)
+  price_books   price_books? @relation(fields: [price_book_id], references: [price_book_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_price_book")
+  products      products?    @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product")
+
+  @@schema("product")
+}
+
+model price_books {
+  price_book_id    Int                @id @default(autoincrement())
+  channel_id       Int
+  name             String?            @db.VarChar(100)
+  created_at       DateTime?          @default(now()) @db.Timestamp(6)
+  price_book_items price_book_items[]
+
+  @@schema("product")
+}
+
+model product_images {
+  image_id   Int       @id @default(autoincrement())
+  product_id Int?
+  image_url  String?
+  products   products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_image")
+
+  @@schema("product")
+}
+
+model products {
+  product_id       Int                @id @default(autoincrement())
+  name             String             @db.VarChar(150)
+  description      String?
+  category_id      Int?
+  created_at       DateTime?          @default(now()) @db.Timestamp(6)
+  stock_quantity   Int?               @default(0)
+  price_book_items price_book_items[]
+  product_images   product_images[]
+  categories       categories?        @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_category")
+
+  @@schema("product")
+}
