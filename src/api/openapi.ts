@@ -7,8 +7,8 @@ export const openApiSpec = {
   },
   servers: [
     {
-      url: 'http://localhost:3000',
-      description: 'Local development'
+      url: 'http://51.21.167.196:3000',
+      description: 'EC2 public IP'
     }
   ],
   tags: [
