@@ -17,7 +17,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  hsts: false,
+}));
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
