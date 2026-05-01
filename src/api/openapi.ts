@@ -7,7 +7,7 @@ export const openApiSpec = {
   },
   servers: [
     {
-      url: 'http://51.21.167.196:3000',
+      url: '/',
       description: 'EC2 public IP'
     }
   ],
